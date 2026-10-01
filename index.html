@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgriConnect | Farmer Marketplace</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header>
+
+    <h2>🌾 AgriConnect</h2>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#market">Market</a>
+        <a href="#weather">Weather</a>
+        <a href="#farmer">Farmers</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <div class="nav-buttons">
+        <button onclick="openAuth()">🔐 Login</button>
+        <button onclick="openDashboard()">📊 Dashboard</button>
+        <button onclick="openCart()">
+            🛒 <span id="cartCount">0</span>
+        </button>
+    </div>
+
+</header>
+
+
+<!-- ================= HOME ================= -->
+
+<section id="home" class="hero">
+
+    <h1>
+        Fresh From Farm<br>
+        <span>Direct To Your Home</span>
+    </h1>
+
+    <p>
+        AgriConnect connects farmers directly
+        with buyers for fresh agricultural products.
+    </p>
+
+    <button onclick="location.href='#products'">
+        Explore Products
+    </button>
+
+</section>
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<section id="products">
+
+    <h2>🌾 Agricultural Products</h2>
+
+    <p>
+        Buy fresh products directly from farmers.
+    </p>
+
+
+    <div class="filters">
+
+        <input
+            type="text"
+            id="search"
+            placeholder="🔍 Search products..."
+            onkeyup="displayProducts()"
+        >
+
+        <select id="category"
+                onchange="displayProducts()">
+
+            <option value="All">All Categories</option>
+            <option value="Grains">🌾 Grains</option>
+            <option value="Vegetables">🥕 Vegetables</option>
+            <option value="Fruits">🍎 Fruits</option>
+            <option value="Pulses">🫘 Pulses</option>
+
+        </select>
+
+        <input
+            type="number"
+            id="minPrice"
+            placeholder="Min ₹"
+            oninput="displayProducts()"
+        >
+
+        <input
+            type="number"
+            id="maxPrice"
+            placeholder="Max ₹"
+            oninput="displayProducts()"
+        >
+
+    </div>
+
+
+    <div id="productsList"
+         class="products-grid">
+    </div>
+
+</section>
+
+
+<!-- ================= MARKET ================= -->
+
+<section id="market"
+         class="market-section">
+
+    <h2>📈 Today's Market Prices</h2>
+
+    <div class="market">
+
+        <div>
+            🌾 Rice
+            <strong>₹4,500</strong>
+            <small>per Quintal</small>
+        </div>
+
+        <div>
+            🌾 Wheat
+            <strong>₹2,850</strong>
+            <small>per Quintal</small>
+        </div>
+
+        <div>
+            🍅 Tomato
+            <strong>₹32</strong>
+            <small>per Kg</small>
+        </div>
+
+        <div>
+            🌶️ Chilli
+            <strong>₹185</strong>
+            <small>per Kg</small>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FARMER ================= -->
+
+<section id="farmer"
+         class="farmer-section">
+
+    <h2>👨‍🌾 Sell Your Agricultural Products</h2>
+
+    <p>
+        Farmers can register, add products,
+        manage orders and track sales.
+    </p>
+
+    <button onclick="openProductForm()">
+        ➕ Add Product
+    </button>
+
+</section>
+
+
+<!-- ================= WEATHER ================= -->
+
+<section id="weather">
+
+    <h2>🌦️ Farming Weather</h2>
+
+    <p>
+        Check current weather conditions
+        for your farming location.
+    </p>
+
+    <div class="weather-search">
+
+        <input
+            id="location"
+            placeholder="Enter city or village"
+            value="Vijayawada"
+        >
+
+        <button onclick="getWeather()">
+            Check Weather
+        </button>
+
+    </div>
+
+    <div id="weatherResult"
+         class="weather-result">
+
+        Click "Check Weather" to get weather information.
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section id="about">
+
+    <h2>🌱 About AgriConnect</h2>
+
+    <p class="about-text">
+
+        AgriConnect is a digital agriculture
+        marketplace that connects farmers
+        directly with buyers.
+
+        The platform supports product listing,
+        shopping, order management, reviews
+        and weather information.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     CART MODAL
+===================================================== -->
+
+<div id="cartModal" class="modal">
+
+    <div class="modal-box">
+
+        <button class="close"
+                onclick="closeCart()">
+            ×
+        </button>
+
+        <h2>🛒 Shopping Cart</h2>
+
+        <div id="cartItems"></div>
+
+        <hr>
+
+        <p>
+            Subtotal:
+            ₹<span id="cartSubtotal">0</span>
+        </p>
+
+        <p>
+            Delivery:
+            ₹<span id="deliveryCharge">0</span>
+        </p>
+
+        <h3>
+            Total:
+            ₹<span id="cartTotal">0</span>
+        </h3>
+
+        <button onclick="checkout()">
+            Place Order
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     AUTH MODAL
+===================================================== -->
+
+<div id="authModal" class="modal">
+
+    <div class="modal-box">
+
+        <button class="close"
+                onclick="closeAuth()">
+            ×
+        </button>
+
+        <h2>🔐 AgriConnect Account</h2>
+
+
+        <input
+            id="name"
+            placeholder="Full Name"
+        >
+
+        <input
+            id="email"
+            type="email"
+            placeholder="Email"
+        >
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+        >
+
+
+        <select id="role">
+
+            <option value="buyer">
+                Buyer
+            </option>
+
+            <option value="farmer">
+                Farmer
+            </option>
+
+        </select>
+
+
+        <button onclick="signup()">
+            Create Account
+        </button>
+
+        <button onclick="login()">
+            Login
+        </button>
+
+        <button onclick="logout()">
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADD PRODUCT MODAL
+===================================================== -->
+
+<div id="productModal" class="modal">
+
+    <div class="modal-box">
+
+        <button class="close"
+                onclick="closeProductForm()">
+            ×
+        </button>
+
+        <h2>🌾 Add Product</h2>
+
+
+        <input
+            id="productName"
+            placeholder="Product Name"
+        >
+
+
+        <select id="productCategory">
+
+            <option value="Grains">Grains</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Fruits">Fruits</option>
+            <option value="Pulses">Pulses</option>
+
+        </select>
+
+
+        <input
+            id="productPrice"
+            type="number"
+            placeholder="Price per Kg"
+        >
+
+
+        <input
+            id="productQuantity"
+            type="number"
+            placeholder="Quantity in Kg"
+        >
+
+
+        <button onclick="addProduct()">
+            Add Product
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DASHBOARD MODAL
+===================================================== -->
+
+<div id="dashboardModal"
+     class="modal">
+
+    <div class="modal-box dashboard-box">
+
+        <button class="close"
+                onclick="closeDashboard()">
+            ×
+        </button>
+
+        <h2>📊 Dashboard</h2>
+
+        <div id="dashboard"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     REVIEW MODAL
+===================================================== -->
+
+<div id="reviewModal"
+     class="modal">
+
+    <div class="modal-box">
+
+        <button class="close"
+                onclick="closeReview()">
+            ×
+        </button>
+
+        <h2>⭐ Product Review</h2>
+
+        <select id="rating">
+
+            <option value="5">
+                ★★★★★ Excellent
+            </option>
+
+            <option value="4">
+                ★★★★ Good
+            </option>
+
+            <option value="3">
+                ★★★ Average
+            </option>
+
+            <option value="2">
+                ★★ Poor
+            </option>
+
+            <option value="1">
+                ★ Very Poor
+            </option>
+
+        </select>
+
+
+        <textarea
+            id="review"
+            placeholder="Write your feedback...">
+        </textarea>
+
+
+        <button onclick="submitReview()">
+            Submit Review
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <h2>🌾 AgriConnect</h2>
+
+    <p>
+        Connecting Farmers •
+        Empowering Agriculture •
+        Growing Together
+    </p>
+
+    <p>
+        © 2026 AgriConnect
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
